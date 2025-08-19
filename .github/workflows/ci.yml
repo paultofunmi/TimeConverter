@@ -1,0 +1,74 @@
+name: CI Pipeline
+
+# When to run this workflow
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Download your code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Java 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # Step 3: Clean any existing artifacts
+      - name: Clean previous builds
+        run: |
+          mvn clean
+          rm -rf target/
+
+      # Step 4: Run tests with coverage
+      - name: Run tests
+        run: mvn clean test
+
+      # Step 5: Check code formatting (Spotless)
+      - name: Check code formatting
+        run: mvn spotless:check
+        continue-on-error: true
+
+      # Step 6: Check code style (checkstyle)
+      - name: Check code style
+        run: mvn checkstyle:check
+        continue-on-error: true
+
+      # Step 7: Upload JaCoCo coverage reports
+      - name: Upload JaCoCo coverage reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+
+      # Step 8: Upload test reports if tests fail
+      - name: Upload test reports
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-reports
+          path: target/surefire-reports/
+
+      # Step 9: Build Jar
+      - name: Build Jar
+        run: mvn package -DskipTests
+
+      # Step 10: Upload Jar
+      - name: Upload Jar file
+        uses: actions/upload-artifact@v4
+        with:
+          name: british-time-converter-jar
+          path: target/british-time-converter-1.0-SNAPSHOT.jar
+          retention-days: 30
+

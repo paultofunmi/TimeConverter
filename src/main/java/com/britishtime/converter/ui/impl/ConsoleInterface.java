@@ -2,134 +2,129 @@ package com.britishtime.converter.ui.impl;
 
 import com.britishtime.converter.core.BritishTimeConverter;
 import com.britishtime.converter.ui.UserInterface;
-
 import java.util.Scanner;
 
 /**
- * Console-based implementation of the UserInterface.
- * Provides a command-line interface for interacting with the British Time Converter.
+ * Console-based implementation of the UserInterface. Provides a command-line interface for
+ * interacting with the British Time Converter.
  */
 public class ConsoleInterface implements UserInterface {
 
-    private final BritishTimeConverter converter;
-    private final Scanner scanner;
-    private boolean running;
+  private final BritishTimeConverter converter;
+  private final Scanner scanner;
+  private boolean running;
 
-    public ConsoleInterface(BritishTimeConverter converter) {
-        this.converter = converter;
-        this.scanner = new Scanner(System.in);
-        this.running = false;
+  public ConsoleInterface(final BritishTimeConverter converter) {
+    this.converter = converter;
+    this.scanner = new Scanner(System.in);
+    this.running = false;
+  }
+
+  @Override
+  public void start() {
+    if (running) {
+      return; // Already running
     }
 
-    @Override
-    public void start() {
-        if (running) {
-            return; // Already running
-        }
+    running = true;
+    printWelcomeMessage();
 
-        running = true;
-        printWelcomeMessage();
+    while (running && scanner.hasNextLine()) {
+      String input = scanner.nextLine().trim();
 
-        while (running && scanner.hasNextLine()) {
-            String input = scanner.nextLine().trim();
+      if (isQuitCommand(input)) {
+        stop();
+        break;
+      }
 
-            if (isQuitCommand(input)) {
-                stop();
-                break;
-            }
+      processInput(input);
 
-            processInput(input);
-
-            if (running) { // Only prompt if still running
-                promptForNextInput();
-            }
-        }
-
-        cleanup();
+      if (running) { // Only prompt if still running
+        promptForNextInput();
+      }
     }
 
-    @Override
-    public void stop() {
-        running = false;
-    }
+    cleanup();
+  }
 
-    @Override
-    public boolean isRunning() {
-        return running;
-    }
+  @Override
+  public void stop() {
+    running = false;
+  }
 
-    /**
-     * Prints the welcome message and initial instructions.
-     */
-    protected void printWelcomeMessage() {
-        displayMessage("British Spoken Time Converter");
-        displayMessage("Enter time in format HH:mm (e.g., 14:30) or type 'quit' to exit:");
-    }
+  @Override
+  public boolean isRunning() {
+    return running;
+  }
 
-    /**
-     * Processes user input and displays the result.
-     *
-     * @param input the user's input string
-     */
-    protected void processInput(String input) {
-        try {
-            displayConversionResult(input, converter.convert(input));
-        } catch (IllegalArgumentException e) {
-            displayError(e.getMessage());
-        }
-    }
+  /** Prints the welcome message and initial instructions. */
+  protected void printWelcomeMessage() {
+    displayMessage("British Spoken Time Converter");
+    displayMessage("Enter time in format HH:mm (e.g., 14:30) or type 'quit' to exit:");
+  }
 
-    /**
-     * Prompts the user for the next input.
-     */
-    protected void promptForNextInput() {
-        displayMessage("Enter another time or 'quit' or 'q' or 'exit' to exit:");
+  /**
+   * Processes user input and displays the result.
+   *
+   * @param input the user's input string
+   */
+  protected void processInput(final String input) {
+    try {
+      displayConversionResult(input, converter.convert(input));
+    } catch (IllegalArgumentException e) {
+      displayError(e.getMessage());
     }
+  }
 
-    /**
-     * Checks if the input is a quit command.
-     *
-     * @param input the user input to check
-     * @return true if the input is a quit command, false otherwise
-     */
-    protected boolean isQuitCommand(String input) {
-        return "quit".equalsIgnoreCase(input) || "exit".equalsIgnoreCase(input) || "q".equalsIgnoreCase(input);
-    }
+  /** Prompts the user for the next input. */
+  protected void promptForNextInput() {
+    displayMessage("Enter another time or 'quit' or 'q' or 'exit' to exit:");
+  }
 
-    /**
-     * Displays a general message to the user.
-     *
-     * @param message the message to display
-     */
-    protected void displayMessage(String message) {
-        System.out.println(message);
-    }
+  /**
+   * Checks if the input is a quit command.
+   *
+   * @param input the user input to check
+   * @return true if the input is a quit command, false otherwise
+   */
+  protected boolean isQuitCommand(final String input) {
+    return "quit".equalsIgnoreCase(input)
+        || "exit".equalsIgnoreCase(input)
+        || "q".equalsIgnoreCase(input);
+  }
 
-    /**
-     * Displays a conversion result to the user.
-     *
-     * @param input the original input
-     * @param result the conversion result
-     */
-    protected void displayConversionResult(String input, String result) {
-        System.out.printf("Input: %s -> Output: %s%n", input, result);
-    }
+  /**
+   * Displays a general message to the user.
+   *
+   * @param message the message to display
+   */
+  protected void displayMessage(final String message) {
+    System.out.println(message);
+  }
 
-    /**
-     * Displays an error message to the user.
-     *
-     * @param errorMessage the error message to display
-     */
-    protected void displayError(String errorMessage) {
-        System.out.printf("Error: %s%n", errorMessage);
-    }
+  /**
+   * Displays a conversion result to the user.
+   *
+   * @param input the original input
+   * @param result the conversion result
+   */
+  protected void displayConversionResult(final String input, final String result) {
+    System.out.printf("Input: %s -> Output: %s%n", input, result);
+  }
 
-    /**
-     * Performs cleanup operations when shutting down.
-     */
-    protected void cleanup() {
-        scanner.close();
-        displayMessage("Goodbye!");
-        running = false;
-    }
+  /**
+   * Displays an error message to the user.
+   *
+   * @param errorMessage the error message to display
+   */
+  protected void displayError(final String errorMessage) {
+    System.out.printf("Error: %s%n", errorMessage);
+  }
+
+  /** Performs cleanup operations when shutting down. */
+  protected void cleanup() {
+    scanner.close();
+    displayMessage("Goodbye!");
+    running = false;
+  }
 }

@@ -7,25 +7,25 @@ import com.britishtime.converter.rules.impl.ToHourRule;
 import com.britishtime.converter.util.NumberToWordConverter;
 
 /**
- * Factory for creating and configuring the chain of time expression rules.
- * Encapsulates the complexity of rule chain setup.
+ * Factory for creating and configuring the chain of time expression rules. Encapsulates the
+ * complexity of rule chain setup.
  */
 public class TimeExpressionRuleFactory {
 
-    public static TimeExpressionRule createBritishRuleChain() {
-        NumberToWordConverter numberConverter = new NumberToWordConverter();
+  public static TimeExpressionRule createBritishRuleChain() {
+    NumberToWordConverter numberConverter = new NumberToWordConverter();
 
-        // Create rules
-        SpecialTimeRule specialRule = new SpecialTimeRule();
-        OClockRule oClockRule = new OClockRule(numberConverter);
-        PastHourRule pastHourRule = new PastHourRule(numberConverter);
-        ToHourRule toHourRule = new ToHourRule(numberConverter);
+    // Create rules
+    SpecialTimeRule specialRule = new SpecialTimeRule();
+    OClockRule oClockRule = new OClockRule(numberConverter);
+    PastHourRule pastHourRule = new PastHourRule(numberConverter);
+    ToHourRule toHourRule = new ToHourRule(numberConverter);
 
-        // Ordering/Chaining the rules
-        specialRule.setNextRule(oClockRule);
-        oClockRule.setNextRule(pastHourRule);
-        pastHourRule.setNextRule(toHourRule);
+    // Ordering/Chaining the rules
+    specialRule.setNextRule(oClockRule);
+    oClockRule.setNextRule(pastHourRule);
+    pastHourRule.setNextRule(toHourRule);
 
-        return specialRule;
-    }
+    return specialRule;
+  }
 }
