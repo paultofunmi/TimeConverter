@@ -7,7 +7,8 @@ For example, the program will get 12:00 as input and will give noon as output
 - The jar artifacts can be downloaded from artifacts from any of the successful workflow execution
   - See attachment <img width="1641" height="828" alt="Screenshot 2025-08-20 at 1 13 01 AM" src="https://github.com/user-attachments/assets/1dfee191-bbc9-4ad7-a4b9-80c36fc338f8" />
 - You can run with java command below while pointing to the downloaded jar file:
-  - java -jar <path to downloaded jar> 
+  - java -jar <replace_with_path_to_downloaded_jar> 
+  - e.g:  java -jar ~/Downloads/british-time-converter-1.0-SNAPSHOT.jar  
 
 ## Design Patterns Used
 - Facade Pattern: Simplifying complex subsystems
@@ -28,4 +29,4 @@ For example, the program will get 12:00 as input and will give noon as output
     - We can support other languages by implementing the SpeechConverter.
 - NumberToWordConverter found in util package for extracting hour and minute names
 - ConsoleInterface provides an interface for interacting with program.
-  - We can provide other UI interfaces by implementing the UserInterface
+  - We can provide other UI interfaces by implementing the UserInterface 
