@@ -3,9 +3,10 @@ A Command Line Program in Java that outputs the British spoken form of a time gi
 For example, the program will get 12:00 as input and will give noon as output
 
 ## How to RUN
-- A packaged jar is available in src/main/resources directory
+- A jar file is available on Actions tab on Github: https://github.com/paultofunmi/BritishTimeConverter/actions
+- The jar artifacts can be downloaded from artifacts from any of the successful workflow execution
 - You can run with java command below while pointing to the jar
-  - java -jar src/main/resources/british-time-converter-1.0-SNAPSHOT.jar 
+  - java -jar <path to downloaded jar> 
 
 ## Design Patterns Used
 - Facade Pattern: Simplifying complex subsystems
