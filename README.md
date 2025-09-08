@@ -30,3 +30,5 @@ For example, the program will get 12:00 as input and will give noon as output
 - NumberToWordConverter found in util package for extracting hour and minute names
 - ConsoleInterface provides an interface for interacting with program.
   - We can provide other UI interfaces by implementing the UserInterface 
+
+- Update Readme.
